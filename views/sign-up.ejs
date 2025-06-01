@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+</head>
+<body>
+    <!-- nav -->
+
+    <main class="signUpDiv">
+        <h1>Create your account</h1>
+
+        <% if(typeof errors !== 'undefined' && errors.length > 0) { %>
+            <ul style="color: red; list-style: none; padding: 0;">
+                <% errors.forEach(error => { %>
+                    <li><%= error.msg %></li>
+                <% }); %>
+            </ul>
+        <% } %>
+
+        <form action="/sign-up" method="post" class="signUpForm">
+            <label for="first_name">First Name:</label>
+            <input type="text" name="first_name" id="first_name" placeholder="John" required value="<%= typeof user_data !== 'undefined' ? user_data.first_name : '' %>"><br><br>
+
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" placeholder="Doe" required
+            value="<%= typeof user_data !== 'undefined' ? user_data.last_name : '' %>"><br><br>
+
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" placeholder="Username or email" required value="<%= typeof user_data !== 'undefined' ? user_data.username : '' %>"><br><br>
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required><br><br>
+
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required><br><br>
+
+            <button type="submit" class="submitBtn">Sign Up</button><br><br>
+            <p>Already have an account? <a href="/log-in">Log In</a></p>
+        </form>
+
+        <p><a href="/" class="backToLink">Back to Home</a></p>
+    </main>
+</body>
+</html>

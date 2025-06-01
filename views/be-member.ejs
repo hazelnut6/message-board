@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership Form</title>
+</head>
+<body>
+    <main class="membershipDiv">
+        <h1>Become a Member!</h1>
+        <p>
+            Enter the secret passcode to reveal message authors and get posting priviliges.
+        </p>
+
+        <% if(typeof errors !== 'undefined' && errors.length > 0) { %>
+            <ul style="color: red; list-style-type: none; padding: 0;">
+                <% errors.forEach(error => { %>
+                    <li><%= error.msg %></li>
+                <% }); %>
+            </ul>
+        <% } %>
+
+        <form action="/be-member" method="post" class="membershipForm">
+            <label for="passcode">Secrest Passcode:</label>
+            <input type="password" name="passcode" id="passcode" required><br><br>
+
+            <button type="submit">Unlock Membership</button>
+        </form>
+
+        <p><a href="/">Back to Home</a></p>
+    </main>
+</body>
+</html>

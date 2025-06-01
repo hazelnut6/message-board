@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Message</title>
+</head>
+<body>
+    <!-- wrap in a div when moved to other file -->
+    <h1>Create Your Message</h1>
+
+    <% if(typeof errors !== 'undefined' && errors.length > 0) { %>
+        <ul style="color: red; list-style-type: none; padding: 0;">
+            <% errors.forEach(error => { %>
+                <li><%= error.message %></li>
+            <% }) %>
+        </ul>
+    <% } %>
+
+    <form action="/create-message" method="post" class="createMsgForm">
+        <label for="title">Title:</label>
+        <input type="text" name="title" id="title" placeholder="Enter title" required value="<%= typeof message_data !== 'undefined' ? message_data.title : '' %>"><br><br>
+
+        <label for="text_content">Message Content:</label>
+        <textarea name="text_content" id="text_content" rows="10" cols="50" placeholder="Enter message" required>
+            <%= typeof message_data !== 'undefined' ? message_data.text_content : '' %>
+        </textarea><br><br>
+
+        <button type="submit">Post Message</button>
+    </form>
+
+    <p><a href="/">Back to Home</a></p>
+</body>
+</html>

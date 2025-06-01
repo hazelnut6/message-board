@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        .message-container {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .message-title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .message-content {
+            margin-bottom: 10px;
+        }
+        .message-info {
+            font-size: 0.9em;
+            color: #777;
+        }
+        .message-author {
+            font-weight: bold;
+        }
+
+        /* Styles for flash messages */
+        .flash-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+        }
+        .flash-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <main class="indexDiv">
+        <h1><%= title %></h1>
+        <p>Welcome to the Message Board!</p>
+
+        <!-- Flash messages -->
+        <% if(typeof messages !== 'undefined') { %>
+            <% if(flashMessages.success && flashMessages.success.length > 0) { %>
+                <div class="flashSuccess">
+                    <% flashMessages.success.forEach(msg => { %>
+                        <p><%= msg %></p>
+                    <% }) %>
+                </div>
+            <% } %>
+            <% if(flashMessages.error && flashMessages.error.length > 0) { %>
+                <div class="flashError">
+                    <% flashMessages.error.forEach(msg => { %> 
+                        <p class="<%= msg %>"></p>
+                    <% }) %>
+                </div>
+            <% } %>
+        <% } %>
+
+        <!-- Links -->
+        <% if(currentUser) { %>
+            <p>Welcome back, <%= currentUser.first_name %>!</p>
+            <p><a href="/log-out">Log Out</a></p>
+
+            <% if(!currentUser.is_member) { %>
+                <p><a href="/be-member">Become a Member</a></p>
+            <% } %>
+
+            <% if(!currentUser.is_admin) { %>
+                <p><a href="/be-admin">Become an Administrator</a></p>
+            <% } %>
+
+        <% } else { %>
+            <p><a href="/log-in">Log In</a> or <a href="/sign-up">Sign Up</a> to post messages.</p>
+        <% } %>
+
+        <hr>
+
+        <h2>All Messages</h2>
+
+        <% if(messages && messages.length > 0) { %>
+            <% messages.forEach(message => { %>
+                <div class="msgContainer">
+                    <h3 class="msgTitle"><%= message.title %></h3>
+                    <p class="msgContent"><%= message.text_content %></p>
+                    <p class="msgInfo">
+                        Posted by:
+                        <% if(currentUser && currentUser.is_member) { %>
+                            <span class="msgAuthor"><%= message.author_username %></span>
+                        <% } else { %>
+                            <span class="msgAuthor">Anonymous</span>
+                        <% } %>
+                        on <%= new Date(message.timestamp).toLocaleString() %>
+                    </p>
+
+                    <% if(currentUser && currentUser.is_admin) { %>
+                        <form action="/message/<%= message.id %>/delete" method="post" style="display: inline;">
+                            <button type="submit">Delete</button>
+                        </form>
+                    <% } %>
+
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No messages yet. Be the first to post!</p>
+        <% } %>
+    </main>
+</body>
+</html>
